@@ -37,4 +37,8 @@ app.use(UserprofileRoutes);
 app.use(accountsettingRoute)
 app.use(paymentRoutes);
 app.use(enrollmentRoute);
+
+app.get('/',(req,res)=>{
+    res.send('on  / route visit other routes......')  // Homepage route for testing purposes
+});
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
