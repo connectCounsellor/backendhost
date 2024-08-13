@@ -2,14 +2,20 @@ const blogModel = require('../models/blog');
 
 // Route to create a new blog entry
 const writeBlog = async (req, res) => {
+        
     try {
-        const blog = await blogModel.create({
-            title: req.body.title,
-            content: req.body.content,
-            author: req.body.author,
-            image: req.body.image,
-        });
-        res.status(201).json(blog);
+        if(req.user.role === 'admin'){
+            const blog = await blogModel.create({
+                title: req.body.title,
+                content: req.body.content,
+                author: req.body.author,
+                image: req.body.image,
+            });
+            res.status(201).json(blog);
+        }
+        else{
+            return res.status(403).json({ message: 'unauthorized' });
+        }
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

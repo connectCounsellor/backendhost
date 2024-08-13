@@ -11,7 +11,7 @@ router.post('/api/blog/write', authenticateToken, writeBlog);
 // Sample route to verify the setup
 router.get('/api/blog/read', getAllBlogs);
 router.get('/api/blog/read/:id', getBlogById);
-router.delete('/api/blog/delete/:id', deleteBlog);
+router.delete('/api/blog/delete/:id', authenticateToken,deleteBlog);
 
 
 

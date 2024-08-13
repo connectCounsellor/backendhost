@@ -80,50 +80,13 @@ const loginController = async (req, res) => {
 
 
 
-// for authentication after login 
-const checkLoginStatus = async (req, res) => {
-    try {
-      let token = req.headers.authorization?.split(' ')[1]; // Assuming Bearer token
-  
-      // Check if token is in the request body (for local storage scenario)
-      if (!token && req.body.token) {
-        token = req.body.token;
-      }
-  
-      if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
-      }
-  
-      // Verify token
-      jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-        if (err) {
-          return res.status(401).json({ isLoggedIn: false });
-        }
-  
-        // Token is valid, now check if user exists or fetch user details
-        const user = await userModel.findById(decoded.id).select('-password');
-  
-        if (!user) {
-          return res.status(404).json({ isLoggedIn: false });
-        }
-  
-        // If needed, you can send back user details
-        res.status(200).json({ isLoggedIn: true, user });
-      });
-    } catch (error) {
-      console.error('Error checking login status:', error);
-      res.status(500).json({ isLoggedIn: false, error: 'Server error' });
-    }
-  };
 
 
 
   const getUserDetails = async (req, res) => {
     try {
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await userModel.findById(decoded.id).select('-password');
-
+        
+        const user = req.user;
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -200,4 +163,4 @@ const forgotPassword = async (req, res) => {
   };
 
 
-module.exports = { registerController, loginController ,checkLoginStatus,getUserDetails,forgotPassword, resetPassword};
+module.exports = { registerController, loginController ,getUserDetails,forgotPassword, resetPassword};

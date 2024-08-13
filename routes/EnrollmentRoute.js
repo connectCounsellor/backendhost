@@ -6,6 +6,7 @@ const { createEnrollment, getEnrolledUsersByCourseId ,getAllUsers} = require('..
 router.post('/api/course-enrollment', createEnrollment);
 
 // GET route to fetch all enrolled users by course ID
+// below routes are created for fetching data on admin panel 
 router.get('/api/course/:courseId/enrolled', getEnrolledUsersByCourseId);
 router.get('/api/course-enrollment', getEnrolledUsersByCourseId);
 // router.get('/api/getallenrolledusers',getAllUsers)
