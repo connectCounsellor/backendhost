@@ -8,8 +8,8 @@ const {writeProfile,readProfile} = require('../controllers/userProfile_controlle
 
 
 
-router.post('/api/user/profile/write/:id', authenticateToken,writeProfile);
-router.get('/api/user/profile/read/:id',authenticateToken,readProfile);
+router.post('/api/user/profile/write', authenticateToken,writeProfile);
+router.get('/api/user/profile/read',authenticateToken,readProfile);
 
 // Route for updating profile and creating new user if not exists
 // router.post('/api/user/profile/write/:id', async (req, res) => {

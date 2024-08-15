@@ -1,7 +1,8 @@
 const UserProfile = require('../models/userProfileModel');
 
 const writeProfile = async(req,res)=>{
-    const { id } = req.params;
+    
+  const  id  = req.user._id.toString();
     const { firstName, lastName, email, hobby, language, profilePic } = req.body;
   
     try {
@@ -37,8 +38,7 @@ const writeProfile = async(req,res)=>{
 }
 
 const readProfile = async(req,res)=>{
-    const { id } = req.params;
-
+  const  id  = req.user._id.toString();
   try {
     const user = await UserProfile.findById(id);
     if (user) {
