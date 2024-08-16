@@ -10,26 +10,31 @@ const {
 } = require("../Util/Store");
 // Register new user
 const registerController = async (req, res) => {
-  const { username, phone, email, password } = req.body;
+  const { email } = req.body;
 
   try {
-    // Hash the OTP
-    const otp = generateOTP();
-    const hashedOTP = crypto.createHash("sha256").update(otp).digest("hex");
+    const existingUser = await userModel.findOne({ email: email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists." });
+    } else {
+      // Hash the OTP
+      const otp = generateOTP();
+      const hashedOTP = crypto.createHash("sha256").update(otp).digest("hex");
 
-    // Store OTP temporarily
-    saveOTPToStorage(email, hashedOTP, 600000); // Store for 10 minutes
+      // Store OTP temporarily
+      saveOTPToStorage(email, hashedOTP, 600000); // Store for 10 minutes
 
-    // Send OTP email
-    const message = `You are receiving this because you registered on Connect Counsellor. \n\n
+      // Send OTP email
+      const message = `You are receiving this because you registered on Connect Counsellor. \n\n
       Please use the following OTP to verify your account:\n\n
       ${otp}\n\n
       If you did not request this, please ignore this email.\n`;
 
-    await sendMail(email, "Account verification OTP", message);
-    res
-      .status(200)
-      .json({ message: "An email has been sent for verification." });
+      await sendMail(email, "Account verification OTP", message);
+      res
+        .status(200)
+        .json({ message: "An email has been sent for verification." });
+    }
   } catch (error) {
     res.status(500).json({ message: "Server error." });
   }
@@ -56,8 +61,6 @@ const loginController = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found." });
     }
-
-    
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -114,14 +117,12 @@ const forgotPassword = async (req, res) => {
 
     try {
       await sendMail(user.email, "Password Reset OTP", message);
-      res
-        .status(200)
-        .json({
-          message:
-            "An email has been sent to " +
-            user.email +
-            " with further instructions.",
-        });
+      res.status(200).json({
+        message:
+          "An email has been sent to " +
+          user.email +
+          " with further instructions.",
+      });
     } catch (err) {
       res
         .status(500)
@@ -168,38 +169,36 @@ const resetPassword = async (req, res) => {
 const verifyOtpController = async (req, res) => {
   const { email, otp } = req.body;
   const storedData = getStoredData(email);
-  const existingUser=await userModel.findOne({email});
-  if(existingUser){
+  const existingUser = await userModel.findOne({ email });
+  if (existingUser) {
     return res.status(400).json({ message: "User already exists" });
-  }
- else if (!storedData) {
-      return res.status(400).json({ message: "OTP has expired or not found." });
+  } else if (!storedData) {
+    return res.status(400).json({ message: "OTP has expired or not found." });
   }
 
-  const hashedOTP = crypto.createHash('sha256').update(otp).digest('hex');
+  const hashedOTP = crypto.createHash("sha256").update(otp).digest("hex");
 
   // Check if the OTP matches
   if (hashedOTP === storedData.otp && Date.now() < storedData.expiresAt) {
-      // Save user data to the database
-      const { username, phone, password } = req.body; // Assuming you pass these from the frontend
-      bcrypt.genSalt(10, async function (err, salt) {
-        await bcrypt.hash(password, salt, async function (err, hash) {
-            user = await userModel.create({
-                username,
-                phone,
-                email,
-                password: hash,
-            });
+    // Save user data to the database
+    const { username, phone, password } = req.body; // Assuming you pass these from the frontend
+    bcrypt.genSalt(10, async function (err, salt) {
+      await bcrypt.hash(password, salt, async function (err, hash) {
+        user = await userModel.create({
+          username,
+          phone,
+          email,
+          password: hash,
         });
+      });
     });
 
-      deleteStoredOTP(email); // Delete OTP after successful verification
-      return res.status(200).json({ message: "User registered successfully." });
+    deleteStoredOTP(email); // Delete OTP after successful verification
+    return res.status(200).json({ message: "User registered successfully." });
   } else {
-      return res.status(400).json({ message: "Invalid or expired OTP." });
+    return res.status(400).json({ message: "Invalid or expired OTP." });
   }
 };
-
 
 module.exports = {
   registerController,
