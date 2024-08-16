@@ -173,7 +173,7 @@ const verifyOtpController = async (req, res) => {
   if (existingUser) {
     return res.status(400).json({ message: "User already exists" });
   } else if (!storedData) {
-    return res.status(400).json({ message: "OTP has expired or not found." });
+    return res.status(442).json({ message: "OTP has expired or not found." });
   }
 
   const hashedOTP = crypto.createHash("sha256").update(otp).digest("hex");
