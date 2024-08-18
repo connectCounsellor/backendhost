@@ -30,12 +30,13 @@ const userSchema = mongoose.Schema({
     },
     language:{
         type : String,
+        default: "English (US)",
     },
     Gender:{
         type : String,
       enum: ["Male", "Female", "Other"],
        
-        default: "Other",
+        default: " ",
     },
     DOB:{
         type : Date,
