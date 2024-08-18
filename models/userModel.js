@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    email: {
+       email: {
         type: String,
         required: true,
         unique: true,
@@ -19,6 +14,38 @@ const userSchema = mongoose.Schema({
     },
     resetPasswordOTP: String,
     resetPasswordExpires: Date,
+
+    firstName :{
+        type:String,
+        default: "",
+        
+    },
+    lastName:{
+        type : String,
+        default: "",
+    },
+      hobby : {
+        type : String,
+        default: "",
+    },
+    language:{
+        type : String,
+    },
+    Gender:{
+        type : String,
+      enum: ["Male", "Female", "Other"],
+       
+        default: "Other",
+    },
+    DOB:{
+        type : Date,
+        default: "",
+    },
+
+Address:{
+    type:String,
+}
+
 });
 
 const User = mongoose.model("User", userSchema);

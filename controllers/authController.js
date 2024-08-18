@@ -181,14 +181,15 @@ const verifyOtpController = async (req, res) => {
   // Check if the OTP matches
   if (hashedOTP === storedData.otp && Date.now() < storedData.expiresAt) {
     // Save user data to the database
-    const { username, phone, password } = req.body; // Assuming you pass these from the frontend
+    const {  phone, password,firstName,lastName } = req.body; // Assuming you pass these from the frontend
     bcrypt.genSalt(10, async function (err, salt) {
       await bcrypt.hash(password, salt, async function (err, hash) {
         user = await userModel.create({
-          username,
-          phone,
+                  phone,
           email,
           password: hash,
+          firstName,
+          lastName,
         });
       });
     });
@@ -199,6 +200,17 @@ const verifyOtpController = async (req, res) => {
     return res.status(400).json({ message: "Invalid or expired OTP." });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = {
   registerController,
