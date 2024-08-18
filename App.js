@@ -22,6 +22,7 @@ const UserprofileRoutes = require('./routes/UserProfile');
 const accountsettingRoute = require('./routes/Acountsetting')
 const paymentRoutes = require('./routes/payment')
 const enrollmentRoute = require('./routes/EnrollmentRoute');
+const WebinarRoute = require('./routes/Webinar');
 // const {authenticateToken} = require('./middleware/authenticate'); 
 // Middleware
 app.use(cors());
@@ -37,7 +38,7 @@ app.use(UserprofileRoutes);
 app.use(accountsettingRoute)
 app.use(paymentRoutes);
 app.use(enrollmentRoute);
-
+app.use(WebinarRoute); // Route
 app.get('/',(req,res)=>{
     res.send('on  / route visit other routes......')  // Homepage route for testing purposes
 });
