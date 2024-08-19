@@ -11,7 +11,7 @@ const WebinarSchema = mongoose.Schema({
     meetingPass: String,
     platform: String,
     price:{
-        type: <String></String>,
+        type: String,
         default:0,
     }
 })
