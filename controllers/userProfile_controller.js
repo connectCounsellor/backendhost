@@ -7,7 +7,7 @@ const writeProfile = async (req, res) => {
   const { firstName, lastName, hobby, language,  DOB, Address, Gender} = req.body;
 console.log('Writing', id, firstName, lastName,hobby, language, DOB, Address, Gender);
   try {
-    const user = await userModel.findOneAndUpdate(
+    let user = await userModel.findOneAndUpdate(
       { _id: id },
       {
         firstName,
@@ -25,7 +25,7 @@ console.log('Writing', id, firstName, lastName,hobby, language, DOB, Address, Ge
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.status(200).json(user);
+    res.status(200);
   } catch (error) {
     res.status(500).json({ message: 'Error updating profile', error });
   }
