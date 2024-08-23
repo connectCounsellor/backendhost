@@ -18,9 +18,11 @@ const AppointmentController = async function (req, res) {
       date: formattedDate, 
       slot 
     });
-
     if (existingAppointment) {
-      return res.status(409).json({ message: "This slot is already booked. Please select another slot." });
+      return res.status(409).json({
+        message: "This slot is already booked. Please select another slot.",
+        existingAppointment
+      });
     }
 
     // Create a new appointment with the formatted date
