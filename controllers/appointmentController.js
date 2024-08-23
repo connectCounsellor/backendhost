@@ -7,7 +7,7 @@ const cron = require('node-cron');
 const AppointmentController = async function (req, res) {
   let { reason, date, slot } = req.body; // Added slot in the request body
   const userId = req.user._id;
-
+  console.log(slot);
   try {
     // Check if the slot is already booked for the selected date
     const existingAppointment = await AppointmentModel.findOne({ date, slot });
@@ -19,6 +19,7 @@ const AppointmentController = async function (req, res) {
     // Create a new appointment with slot
     const newAppointment = await AppointmentModel.create({ userId, reason, date, slot });
     res.status(200).json({ message: "Appointment booked successfully" });
+    
   } catch (err) {
     console.error('Error in AppointmentController:', err.message);
     res.status(500).json({ message: "Error booking appointment" });
