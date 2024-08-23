@@ -8,16 +8,29 @@ const AppointmentController = async function (req, res) {
   let { reason, date, slot } = req.body; // Added slot in the request body
   const userId = req.user._id;
   console.log(slot);
+  
   try {
-    // Check if the slot is already booked for the selected date
-    const existingAppointment = await AppointmentModel.findOne({ date, slot });
-    
+    // Format the incoming date to exclude the time (YYYY-MM-DD)
+    const formattedDate = new Date(date).toISOString().split('T')[0];
+
+    // Check if the slot is already booked for the selected date (ignoring time)
+    const existingAppointment = await AppointmentModel.findOne({ 
+      date: formattedDate, 
+      slot 
+    });
+
     if (existingAppointment) {
-      return res.status(400).json({ message: "This slot is already booked. Please select another slot." });
+      return res.status(409).json({ message: "This slot is already booked. Please select another slot." });
     }
 
-    // Create a new appointment with slot
-    const newAppointment = await AppointmentModel.create({ userId, reason, date, slot });
+    // Create a new appointment with the formatted date
+    const newAppointment = await AppointmentModel.create({ 
+      userId, 
+      reason, 
+      date: formattedDate, 
+      slot 
+    });
+    
     res.status(200).json({ message: "Appointment booked successfully" });
     
   } catch (err) {
