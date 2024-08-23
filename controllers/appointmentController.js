@@ -1,13 +1,23 @@
-// controllers/appointmentController.js
 const AppointmentModel = require('../models/Appointment');
 const nodemailer = require('nodemailer');
 const UserModel = require('../models/userModel');
+const cron = require('node-cron');
+
+// Booking an Appointment with Slot
 const AppointmentController = async function (req, res) {
-  let { reason, date } = req.body;
+  let { reason, date, slot } = req.body; // Added slot in the request body
   const userId = req.user._id;
 
   try {
-    const newAppointment = await AppointmentModel.create({ userId, reason, date });
+    // Check if the slot is already booked for the selected date
+    const existingAppointment = await AppointmentModel.findOne({ date, slot });
+    
+    if (existingAppointment) {
+      return res.status(400).json({ message: "This slot is already booked. Please select another slot." });
+    }
+
+    // Create a new appointment with slot
+    const newAppointment = await AppointmentModel.create({ userId, reason, date, slot });
     res.status(200).json({ message: "Appointment booked successfully" });
   } catch (err) {
     console.error('Error in AppointmentController:', err.message);
@@ -15,6 +25,7 @@ const AppointmentController = async function (req, res) {
   }
 };
 
+// Get all appointments
 const getAppointment = async function (req, res) {
   try {
     const appointments = await AppointmentModel.find().populate('userId', 'username');
@@ -25,7 +36,7 @@ const getAppointment = async function (req, res) {
   }
 };
 
-
+// Update appointment status
 const updateAppointmentStatus = async function (req, res) {
   const { id } = req.params;
   const { status } = req.body;
@@ -64,9 +75,9 @@ const updateAppointmentStatus = async function (req, res) {
       });
 
       const mailOptions = {
-        from: `"counsillhub" <${process.env.EMAIL_USER}>`,
-        to: userEmail,
-        subject: `Your appointment request has been ${status}`,
+        from:` "counsillhub" <${process.env.EMAIL_USER}>`,
+        to:` userEmail`,
+        subject:` Your appointment request has been ${status}`,
         text: `Your appointment request on ${new Date(appointment.date).toLocaleString()} for ${appointment.reason} has been ${status}.`
       };
 
@@ -87,5 +98,24 @@ const updateAppointmentStatus = async function (req, res) {
   }
 };
 
+// Cron job to update appointment statuses daily at midnight
+cron.schedule('0 0 * * *', async () => {
+  try {
+    const currentDate = new Date();
+    const appointments = await AppointmentModel.find({
+      date: { $lt: currentDate },
+      status: 'pending'
+    });
+
+    appointments.forEach(async (appointment) => {
+      appointment.status = 'completed'; // Mark as completed if the date has passed
+      await appointment.save();
+    });
+
+    console.log('Daily cron job: Appointment statuses updated');
+  } catch (err) {
+    console.error('Error in cron job:', err.message);
+  }
+});
 
 module.exports = { AppointmentController, getAppointment, updateAppointmentStatus };
