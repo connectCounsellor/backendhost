@@ -115,18 +115,22 @@ const updateAppointmentStatus = async function (req, res) {
 };
 
 // Cron job to update appointment statuses daily at midnight
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('0 12 * * *', async () => {
   try {
     const currentDate = new Date();
+
+    // Find appointments where the date is less than the current date
+    // and the status is either 'pending' or 'accepted'
     const appointments = await AppointmentModel.find({
       date: { $lt: currentDate },
-      status: 'pending'
+      status: { $in: ['pending', 'accepted','rejected'] }
     });
 
-    appointments.forEach(async (appointment) => {
-      appointment.status = 'completed'; // Mark as completed if the date has passed
+    // Update the status to 'completed'
+    for (const appointment of appointments) {
+      appointment.status = 'completed';
       await appointment.save();
-    });
+    }
 
     console.log('Daily cron job: Appointment statuses updated');
   } catch (err) {
