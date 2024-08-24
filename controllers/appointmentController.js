@@ -18,7 +18,7 @@ const AppointmentController = async function (req, res) {
       date: formattedDate, 
       slot 
     });
-    if (existingAppointment) {
+    if (existingAppointment && !existingAppointment.status === 'completed') {
       return res.status(409).json({
         message: "This slot is already booked. Please select another slot.",
         existingAppointment
