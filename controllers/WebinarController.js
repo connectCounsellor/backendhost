@@ -45,4 +45,28 @@ const postWebinar = async (req, res) => {
         }
 }
 
-module.exports={getWebinars,postWebinar}
+
+const getWebinarById = async (req, res) => {
+  try {
+      const webinar = await WebinarModel.findById(req.params.id);
+      if (!webinar) {
+          return res.status(404).json({ message: 'Webinar not found' });
+      }
+
+      // Check if the webinar is paid
+      if (webinar.price > 0) {
+          // Check if the user has paid for the webinar
+          const userPaid = webinar.paidUsers.includes(req.user._id);
+          if (!userPaid) {
+              return res.status(403).json({ message: 'Access denied. Payment required.' });
+          }
+      }
+
+      res.status(200).json(webinar);
+  } catch (error) {
+      console.error('Error fetching webinar:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports={getWebinars,postWebinar,getWebinarById}
