@@ -22,7 +22,7 @@ const postWebinar = async (req, res) => {
         meetingLink,
         meetingId,
         meetingPass,
-        platform} = req.body;
+        platform,price} = req.body;
 
         try {
             const newWebinar = await  WebinarModel.create({
@@ -34,7 +34,8 @@ const postWebinar = async (req, res) => {
                 meetingLink,
                 meetingId,
                 meetingPass,
-                platform
+                platform,
+                price,
             });
             res.status(201).json(newWebinar);
 
