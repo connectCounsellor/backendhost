@@ -10,6 +10,11 @@ const WebinarSchema = mongoose.Schema({
     meetingId: String,
     meetingPass: String,
     platform: String,
+    price:{
+        type: String,
+        default:0,
+    },
+    paidUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 })
 
 const Webinar = mongoose.model('Webinar', WebinarSchema);
