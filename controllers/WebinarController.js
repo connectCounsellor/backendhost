@@ -69,4 +69,75 @@ const getWebinarById = async (req, res) => {
   }
 };
 
-module.exports={getWebinars,postWebinar,getWebinarById}
+
+const deleteWebinarById = async (req, res) => {
+  const { webinar_id } = req.body;
+
+  // Validate the webinar_id
+  if (!webinar_id) {
+    return res.status(400).json({ message: 'Webinar ID is required' });
+  }
+
+  try {
+    const webinar = await WebinarModel.findOneAndDelete({ _id: webinar_id });
+
+    if (!webinar) {
+      return res.status(404).json({ message: 'Webinar not found' });
+    }
+
+    res.status(200).json({ message: 'Webinar deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting webinar:', error);
+    res.status(500).json({ message: 'Something went wrong', error: error.message });
+  }
+};
+
+
+const updateWebinarById = async (req, res) => {
+
+  const { title,
+    date,
+    time,
+    presenter,
+    description,
+    meetingLink,
+    meetingId,
+    meetingPass,
+    platform,price,webinar_id} = req.body;
+
+
+    try
+  {
+    const webinar = await WebinarModel.findByIdAndUpdate(
+      webinar_id,
+      {
+        date,
+        time,
+        presenter,
+        description,
+        meetingLink,
+        meetingId,
+        meetingPass,
+        platform,
+        price
+      },
+      {
+        new: true, // Return the updated document
+      }
+    );
+    if (!webinar) {
+      return res.status(404).json({ message: 'Webinar not found' });
+    }
+    res.status(200).json(webinar);
+
+  }
+  catch(error){
+res.status(404).json({ message:"Error updating the webinar"})
+
+  }
+
+
+
+}
+
+module.exports={getWebinars,postWebinar,getWebinarById,deleteWebinarById,updateWebinarById}
