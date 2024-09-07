@@ -16,9 +16,10 @@ const AppointmentController = async function (req, res) {
     // Check if the slot is already booked for the selected date (ignoring time)
     const existingAppointment = await AppointmentModel.findOne({ 
       date: formattedDate, 
-      slot 
+      slot
     });
-    if (existingAppointment && !existingAppointment.status === 'completed') {
+    console.log(existingAppointment)
+    if (existingAppointment && existingAppointment.status === 'pending' ) {
       return res.status(409).json({
         message: "This slot is already booked. Please select another slot.",
         existingAppointment
@@ -138,4 +139,10 @@ cron.schedule('0 12 * * *', async () => {
   }
 });
 
-module.exports = { AppointmentController, getAppointment, updateAppointmentStatus };
+
+
+
+
+
+
+module.exports = { AppointmentController, getAppointment, updateAppointmentStatus,confirmPayment };

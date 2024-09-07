@@ -46,7 +46,7 @@ exports.verifyPayment = async (req, res) => {
     // Check if the provided signature matches the expected signature
     if (expectedSignature === signature) {
         // Payment is verified
-        res.json({ success: true, message: 'Payment verified successfully' });
+        res.status(200).json({ success: true, message: 'Payment verified successfully' });
     } else {
         // Payment verification failed
         console.error("Signature mismatch:", { expectedSignature, receivedSignature: signature });
