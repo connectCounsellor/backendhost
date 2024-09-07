@@ -145,4 +145,4 @@ cron.schedule('0 12 * * *', async () => {
 
 
 
-module.exports = { AppointmentController, getAppointment, updateAppointmentStatus,confirmPayment };
+module.exports = { AppointmentController, getAppointment, updateAppointmentStatus,};
