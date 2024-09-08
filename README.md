@@ -1,4 +1,5 @@
-#Contributers \n
-->prathameshkhandare \n 
-->Bhaveshrathod    \n
-->Amanrathod
+#Contributers
+
+prathameshkhandare
+Bhavesh Rathod    
+Aman Rathod
