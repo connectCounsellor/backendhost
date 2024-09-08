@@ -66,23 +66,23 @@ const updateAppointmentStatus = async function (req, res) {
       model: UserModel, // Reference to User model where email is stored
       select: 'email' // Select only the email field
     });
-
     if (!appointment) {
       console.log(`Appointment not found for ID: ${id}`);
       return res.status(404).json({ message: "Appointment not found" });
     }
-
+    
     console.log('Current appointment:', appointment);
-
+    
     appointment.status = status;
     await appointment.save();
-
+    
     console.log('Appointment status updated:', appointment);
-
+    
+    
     // Send email notification if status is 'rejected'
     if (appointment.userId && appointment.userId.email) {
       const userEmail = appointment.userId.email;
-
+      
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -93,7 +93,7 @@ const updateAppointmentStatus = async function (req, res) {
 
       const mailOptions = {
         from:` "counsillhub" <${process.env.EMAIL_USER}>`,
-        to:` userEmail`,
+        to:` ${userEmail}`,
         subject:` Your appointment request has been ${status}`,
         text: `Your appointment request on ${new Date(appointment.date).toLocaleString()} for ${appointment.reason} has been ${status}.`
       };
