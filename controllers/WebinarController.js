@@ -71,13 +71,13 @@ const getWebinarById = async (req, res) => {
 
 
 const deleteWebinarById = async (req, res) => {
-  const { webinar_id } = req.body;
-
+  const webinar_id  = req.params.webinar_id;
+console.log(webinar_id);
   // Validate the webinar_id
   if (!webinar_id) {
     return res.status(400).json({ message: 'Webinar ID is required' });
   }
-
+ 
   try {
     const webinar = await WebinarModel.findOneAndDelete({ _id: webinar_id });
 
@@ -95,6 +95,7 @@ const deleteWebinarById = async (req, res) => {
 
 const updateWebinarById = async (req, res) => {
 
+  const editWebinarid= req.params.id;
   const { title,
     date,
     time,
@@ -103,13 +104,13 @@ const updateWebinarById = async (req, res) => {
     meetingLink,
     meetingId,
     meetingPass,
-    platform,price,webinar_id} = req.body;
+    platform,price} = req.body;
 
 
     try
   {
     const webinar = await WebinarModel.findByIdAndUpdate(
-      webinar_id,
+      editWebinarid,
       {
         date,
         time,

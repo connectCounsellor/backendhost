@@ -5,11 +5,11 @@ const {confirmPayment,checkEnrollmentStatus} = require('../controllers/Web_enrol
 const router = express.Router();
 
 router.get('/api/getwebinar',getWebinars);
-router.post('/api/postwebinar',postWebinar);
+router.post('/api/postwebinar',authenticateToken,postWebinar);
 router.get('/api/getwebinars/:id',authenticateToken,getWebinarById)
 router.post('/api/confirmpayment', authenticateToken, confirmPayment);
 router.post('/api/checkEnrollmentStatus', authenticateToken, checkEnrollmentStatus);
-router.delete('/api/webinars/delete',authenticateToken,deleteWebinarById)
-router.put('/api/webinars/update',authenticateToken,updateWebinarById)
+router.delete('/api/webinar/delete/:webinar_id',authenticateToken,deleteWebinarById)
+router.put('/api/webinars/update/:id',authenticateToken,updateWebinarById)
 //for enrollment and payment checks
 module.exports = router;
