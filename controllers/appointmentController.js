@@ -95,7 +95,7 @@ const updateAppointmentStatus = async function (req, res) {
         from:` "counsillhub" <${process.env.EMAIL_USER}>`,
         to:` ${userEmail}`,
         subject:` Your appointment request has been ${status}`,
-        text: `Your appointment request on ${new Date(appointment.date).toLocaleString()} for ${appointment.reason} has been ${status}.`
+        text: `Your appointment request on ${new Date(appointment.date).toLocaleString().split('T')[0]} of slot ${appointment.slot} for ${appointment.reason} has been ${status}.`
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
