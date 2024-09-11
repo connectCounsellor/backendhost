@@ -111,7 +111,7 @@ const updateWebinarById = async (req, res) => {
   {
     const webinar = await WebinarModel.findByIdAndUpdate(
       editWebinarid,
-      {
+      {title,
         date,
         time,
         presenter,
