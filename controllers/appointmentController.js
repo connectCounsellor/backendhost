@@ -45,7 +45,7 @@ const AppointmentController = async function (req, res) {
 // Get all appointments
 const getAppointment = async function (req, res) {
   try {
-    const appointments = await AppointmentModel.find().populate('userId', 'username');
+    const appointments = await AppointmentModel.find().populate('userId', 'firstName email');
     res.status(200).json(appointments);
   } catch (error) {
     console.error('Error in getAppointment:', error.message);
