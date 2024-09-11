@@ -92,11 +92,30 @@ const updateAppointmentStatus = async function (req, res) {
       });
 
       const mailOptions = {
-        from:` "counsillhub" <${process.env.EMAIL_USER}>`,
-        to:` ${userEmail}`,
-        subject:` Your appointment request has been ${status}`,
-        text: `Your appointment request on ${new Date(appointment.date).toLocaleString().split('T')[0]} of slot ${appointment.slot} for ${appointment.reason} has been ${status}.`
+        from: `"Connect Counsellor" <${process.env.EMAIL_USER}>`,
+        to: `${userEmail}`,
+        subject: `Appointment Request Status Update`,
+        text: `
+      Dear user ,
+      
+      We would like to inform you that the status of your recent appointment request has been updated.
+      
+      **Appointment Details:**
+      - **Date:** ${appointment.date.toLocaleDateString()} 
+      - **Time Slot:** ${appointment.slot}:00
+      - **Reason:** ${appointment.reason}
+      
+      **Status:** ${status.charAt(0).toUpperCase() + status.slice(1)}
+      
+      If you have any questions or need further assistance, please do not hesitate to contact us.
+      
+      Thank you for choosing Connect Counsellor.
+      
+      Best regards,
+      The Connect Counsellor
+      `
       };
+      
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
