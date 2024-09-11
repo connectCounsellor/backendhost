@@ -112,7 +112,7 @@ const updateAppointmentStatus = async function (req, res) {
       Thank you for choosing Connect Counsellor.
       
       Best regards,
-      The Connect Counsellor
+      Connect Counsellor Team
       `
       };
       
