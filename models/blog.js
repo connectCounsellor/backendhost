@@ -12,7 +12,14 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category:{
+    type: String,
+    required: true,
+  }
 });
+
+
+
 
 const Blog = new mongoose.model("Blog", blogSchema);
 
