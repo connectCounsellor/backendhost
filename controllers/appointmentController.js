@@ -7,7 +7,8 @@ const cron = require('node-cron');
 const AppointmentController = async function (req, res) {
   let { reason, date, slot } = req.body; // Added slot in the request body
   const userId = req.user._id;
-  console.log(slot);
+  // console.log(slot);
+
   
   try {
     // Format the incoming date to exclude the time (YYYY-MM-DD)
@@ -18,7 +19,7 @@ const AppointmentController = async function (req, res) {
       date: formattedDate, 
       slot
     });
-    console.log(existingAppointment)
+    // console.log(existingAppointment)
     if (existingAppointment && existingAppointment.status === 'pending' ) {
       return res.status(409).json({
         message: "This slot is already booked. Please select another slot.",
@@ -59,7 +60,7 @@ const updateAppointmentStatus = async function (req, res) {
   const { status } = req.body;
 
   try {
-    console.log(`Updating appointment status for appointment ID: ${id} to ${status}`);
+    // console.log(`Updating appointment status for appointment ID: ${id} to ${status}`);
 
     const appointment = await AppointmentModel.findById(id).populate({
       path: 'userId',
@@ -67,16 +68,16 @@ const updateAppointmentStatus = async function (req, res) {
       select: 'email' // Select only the email field
     });
     if (!appointment) {
-      console.log(`Appointment not found for ID: ${id}`);
+      // console.log(`Appointment not found for ID: ${id}`);
       return res.status(404).json({ message: "Appointment not found" });
     }
     
-    console.log('Current appointment:', appointment);
+    // console.log('Current appointment:', appointment);
     
     appointment.status = status;
     await appointment.save();
     
-    console.log('Appointment status updated:', appointment);
+    // console.log('Appointment status updated:', appointment);
     
     
     // Send email notification if status is 'rejected'
@@ -86,13 +87,13 @@ const updateAppointmentStatus = async function (req, res) {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
+          user: process.env.EMAIL_SUPPORT_USER,
+          pass: process.env.EMAIL_SUPPORT_PASS
         }
       });
 
       const mailOptions = {
-        from: `"Connect Counsellor" <${process.env.EMAIL_USER}>`,
+        from: `"Support-Connect-Counsellor" <${process.env.EMAIL_SUPPORT_USER}>`,
         to: `${userEmail}`,
         subject: `Appointment Request Status Update`,
         text: `

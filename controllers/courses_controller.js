@@ -11,7 +11,11 @@ const writeCourse = async (req, res) => {
             shortdescription: req.body.shortdescription,
             description: req.body.description,
             content: req.body.content,
-            category: req.body.category
+            category: req.body.category,
+            author: req.body.author,
+            youtubeLink: req.body.youtubeLink,
+            date: req.body.date,
+
         });
         res.status(201).json(course);
     } catch (error) {
@@ -69,6 +73,9 @@ const updateCourse = async(req,res)=>{
         res.status(500).json({message : 'error updating course',error})
     }
 };
+
+
+
 
 
 module.exports = { writeCourse, readCourse, readcourseById, deleteCourse ,updateCourse};

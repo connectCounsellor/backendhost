@@ -9,7 +9,19 @@ const coursesSchema =mongoose.Schema({
     category:   String,
     price:{
         type: Number,
-        default: 1200,
+        default: 0,
+    },
+    date:{
+        type:Date,
+        default:Date.now(),
+    },
+    youtubeLink:{
+        type:String,
+        required:true,
+    },
+    author:{
+        type:String,
+        required: true,
     }
     
 });
