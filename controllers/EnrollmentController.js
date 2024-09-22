@@ -71,10 +71,14 @@ const getEnrolledUsersByCourseId = async (req, res) => {
 
 
 
-const getAllUsers= async (req,res) => {
+const getAllEnrolledUsers= async (req,res) => {
     try {
-        const users = await User.find();
+        
+        const users= await Enrollment.find().populate('userId', 'firstName email')
+
+
         res.status(200).json(users);
+        console.log(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -83,5 +87,5 @@ const getAllUsers= async (req,res) => {
 module.exports = {
   createEnrollment,
   getEnrolledUsersByCourseId,
-  getAllUsers  // Export the new function
+  getAllEnrolledUsers  // Export the new function
 };

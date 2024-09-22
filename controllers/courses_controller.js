@@ -13,6 +13,7 @@ const writeCourse = async (req, res) => {
             content: req.body.content,
             category: req.body.category,
             author: req.body.author,
+            price:req.body.price,
             youtubeLink: req.body.youtubeLink,
             date: req.body.date,
 
