@@ -1,7 +1,7 @@
 // const UserProfile = require('../models/userProfileModel');
 const userModel = require('../models/userModel');
-
-
+const Enrollment = require('../models/Enrollment');
+const Webinar = require('../models/Webinar');
 const writeProfile = async (req, res) => {
   const id = req.user._id.toString();
   const { firstName, lastName, hobby, language,  DOB, Address, Gender} = req.body;
@@ -46,4 +46,29 @@ const readProfile = async(req,res)=>{
   }
 }
 
-module.exports = {writeProfile,readProfile};
+const getEnrolledCourses = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    // Assuming user is authenticated and userId is in req.user
+    const courses = await Enrollment.find({ userId });
+    res.status(200).json(courses);
+    
+  } catch (error) {
+    console.error('Error fetching enrolled courses:', error);
+    res.status(500).json({ message: 'Error fetching enrolled courses', error: error.message });
+  }
+};
+
+const getEnrolledWebinars=async(req, res )=>{
+  try{
+    const userId=req.user._id;
+    console.log(userId);
+    const webinars=await Webinar.find({paidUsers:{ $in: [userId] }});
+    res.status(200).json({webinars});
+    console.log(webinars);
+  }
+  catch(err){
+    res.status(500).json({ message:err});
+  }
+}
+module.exports = {writeProfile,readProfile,getEnrolledCourses,getEnrolledWebinars};

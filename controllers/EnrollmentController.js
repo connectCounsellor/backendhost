@@ -85,6 +85,7 @@ const getAllEnrolledUsers= async (req,res) => {
 }
 
 module.exports = {
+  
   createEnrollment,
   getEnrolledUsersByCourseId,
   getAllEnrolledUsers  // Export the new function
