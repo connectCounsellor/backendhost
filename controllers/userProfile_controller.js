@@ -5,7 +5,7 @@ const Webinar = require('../models/Webinar');
 const writeProfile = async (req, res) => {
   const id = req.user._id.toString();
   const { firstName, lastName, hobby, language,  DOB, Address, Gender} = req.body;
-console.log('Writing', id, firstName, lastName,hobby, language, DOB, Address, Gender);
+
   try {
     let user = await userModel.findOneAndUpdate(
       { _id: id },
@@ -62,10 +62,10 @@ const getEnrolledCourses = async (req, res) => {
 const getEnrolledWebinars=async(req, res )=>{
   try{
     const userId=req.user._id;
-    console.log(userId);
+    
     const webinars=await Webinar.find({paidUsers:{ $in: [userId] }});
     res.status(200).json({webinars});
-    console.log(webinars);
+    
   }
   catch(err){
     res.status(500).json({ message:err});
