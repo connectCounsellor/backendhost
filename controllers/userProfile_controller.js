@@ -50,7 +50,10 @@ const getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user._id;
     // Assuming user is authenticated and userId is in req.user
-    const courses = await Enrollment.find({ userId });
+    const courses = await Enrollment.find({ userId }).populate({
+      path: 'courseId',  // This references the Course model
+      select: 'image',   // Only fetch the 'image' field
+    });
     res.status(200).json(courses);
     
   } catch (error) {
