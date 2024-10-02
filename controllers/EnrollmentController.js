@@ -84,9 +84,36 @@ const getAllEnrolledUsers= async (req,res) => {
     }
 }
 
+const isUserEnrolled = async (req, res) => {
+  const { courseId } = req.query;
+  const userId = req.user._id;
+  try {
+   
+
+    // Find the enrollment record that matches the userId and courseId
+    const user = await Enrollment.findOne({
+      userId:userId,
+      courseId:courseId,
+    });
+
+    if (user) {
+      
+      return res.status(200).json({ message: 'User is already registered' });
+    } else {
+      
+      return res.status(201).json({ message: 'User is not registered' });
+    }
+  } catch (error) {
+    console.error('Error checking user enrollment:', error);
+    res.status(500).json({ message: 'Error checking user enrollment', error: error.message });  // Send a 500 status in case of error
+  }
+};
+
+
 module.exports = {
   
   createEnrollment,
   getEnrolledUsersByCourseId,
-  getAllEnrolledUsers  // Export the new function
+  getAllEnrolledUsers,
+  isUserEnrolled // Export the new function
 };
