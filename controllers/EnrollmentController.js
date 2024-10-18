@@ -87,6 +87,7 @@ const getAllEnrolledUsers= async (req,res) => {
 const isUserEnrolled = async (req, res) => {
   const { courseId } = req.query;
   const userId = req.user._id;
+  console.log(courseId);
   try {
    
 
@@ -95,7 +96,7 @@ const isUserEnrolled = async (req, res) => {
       userId:userId,
       courseId:courseId,
     });
-
+    
     if (user) {
       
       return res.status(200).json({ message: 'User is already enrolled' });
