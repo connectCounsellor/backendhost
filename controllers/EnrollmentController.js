@@ -98,10 +98,10 @@ const isUserEnrolled = async (req, res) => {
 
     if (user) {
       
-      return res.status(200).json({ message: 'User is already registered' });
+      return res.status(200).json({ message: 'User is already enrolled' });
     } else {
       
-      return res.status(201).json({ message: 'User is not registered' });
+      return res.status(201).json({ message: 'User is not enrolled' });
     }
   } catch (error) {
     console.error('Error checking user enrollment:', error);
