@@ -87,7 +87,7 @@ const getAllEnrolledUsers= async (req,res) => {
 const isUserEnrolled = async (req, res) => {
   const { courseId } = req.query;
   const userId = req.user._id;
-  console.log(courseId);
+  
   try {
    
 
@@ -102,7 +102,7 @@ const isUserEnrolled = async (req, res) => {
       return res.status(200).json({ message: 'User is already enrolled' });
     } else {
       
-      return res.status(201).json({ message: 'User is not enrolled' });
+      return res.status(400).json({ message: 'User is not enrolled' });
     }
   } catch (error) {
     console.error('Error checking user enrollment:', error);
