@@ -9,9 +9,9 @@ const connectDB = require('./Util/dbconfig');
 const coursesRoute = require('./routes/courses');
 const app = express();
 const port = process.env.PORT || 3000;
-
-// app.use(express.json({ limit: '50mb' }));
-// app.use(express.urlencoded({ limit: '50mb', extended: true }));
+const passport = require('passport');
+const gAuth = require('./routes/googleAuth')
+require('./configs/passportconfig')
 
 const BlogRoute = require('./routes/blog');
 const authRoute = require('./routes/authRoute');
@@ -28,8 +28,19 @@ const WebinarRoute = require('./routes/Webinar');
 app.use(cors());
 app.use(express.json()); // To parse JSON bodies
 
+
+
+
+
+
 // Connect to MongoDB
 connectDB();
+
+
+app.use(passport.initialize());
+
+
+app.use('/auth', gAuth);
 app.use(BlogRoute);
 app.use(coursesRoute);
 app.use(authRoute);
