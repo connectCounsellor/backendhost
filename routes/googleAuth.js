@@ -35,20 +35,23 @@ router.post('/sign-in-google-app',async (req, res) => {
     }
     const user =usermodel.findOne({ email: email});
     if(user){
+      console.log("user already exist ",user._id);
       const token = jwt.sign({ id: user._id },process.env.JWT_SECRET, { expiresIn: '30d' } );
-    return  res.status(200).json({ message: "Login successful", token });
+      console.log(token);
+      return  res.status(200).json({ message: "Login successful", token });
     }
-  
+    
     const new_user = await usermodel.create({
       email: email,
       firstName: given_name,
       lastName: family_name,
-  
+      
     })
-  
     
-   const token = jwt.sign({ id: new_user._id },process.env.JWT_SECRET, { expiresIn: '30d' } );
-      res.status(200).json({ message: "Login successful", token });
+    console.log("user new ",new_user._id);
+    const token = jwt.sign({ id: new_user._id },process.env.JWT_SECRET, { expiresIn: '30d' } );
+    console.log(token);
+    res.status(200).json({ message: "Login successful", token });
   
   }
   catch(err){
