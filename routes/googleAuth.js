@@ -27,12 +27,8 @@ router.get(
 
 router.post('/sign-in-google-app',async (req, res) => {
   console.log('initial ',req.body)
-  const {given_name,family_name,email} =req.body;
-  const email_verified = req.body['email _verified'];
-  console.log(family_name)
-  console.log(email_verified)
-  console.log(email);
-  console.log(email_verified)
+  const {given_name,family_name,email_verified,email} =req.body;
+  
   try{
     if(!email_verified) {
       return res.status(400).json({ message: 'Email is not verified' });
