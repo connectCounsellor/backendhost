@@ -33,7 +33,7 @@ router.post('/sign-in-google-app',async (req, res) => {
     if(!email_verified) {
       return res.status(400).json({ message: 'Email is not verified' });
     }
-    const user =usermodel.findOne({ email: email});
+    const user = await usermodel.findOne({ email: email});
     if(user){
       console.log("user already exist ",user._id);
       const token = jwt.sign({ id: user._id },process.env.JWT_SECRET, { expiresIn: '30d' } );
