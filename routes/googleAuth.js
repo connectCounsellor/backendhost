@@ -34,7 +34,7 @@ router.post('/sign-in-google-app',async (req, res) => {
     const user =usermodel.findOne({ email: email});
     if(user){
       const token = jwt.sign({ id: user._id },process.env.JWT_SECRET, { expiresIn: '30d' } );
-    return  es.status(200).json({ message: "Login successful", token });
+    return  res.status(200).json({ message: "Login successful", token });
     }
   
     const new_user = await usermodel.create({
