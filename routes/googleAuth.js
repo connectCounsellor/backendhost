@@ -26,7 +26,7 @@ router.get(
 );
 
 router.post('/sign-in-google-app',async (req, res) => {
-  console.log('initial ',req.body)
+  
   const {given_name,family_name,email_verified,email} =req.body;
   
   try{
@@ -35,9 +35,9 @@ router.post('/sign-in-google-app',async (req, res) => {
     }
     const user = await usermodel.findOne({ email: email});
     if(user){
-      console.log("user already exist ",user._id);
+    
       const token = jwt.sign({ id: user._id },process.env.JWT_SECRET, { expiresIn: '30d' } );
-      console.log(token);
+    
       return  res.status(200).json({ message: "Login successful", token });
     }
     
@@ -48,9 +48,9 @@ router.post('/sign-in-google-app',async (req, res) => {
       
     })
     
-    console.log("user new ",new_user._id);
+   
     const token = jwt.sign({ id: new_user._id },process.env.JWT_SECRET, { expiresIn: '30d' } );
-    console.log(token);
+  
     res.status(200).json({ message: "Login successful", token });
   
   }
