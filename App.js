@@ -32,7 +32,7 @@ app.use(express.json()); // To parse JSON bodies
 
 
 
-
+sendDailyQuote();
 
 // Connect to MongoDB
 connectDB();

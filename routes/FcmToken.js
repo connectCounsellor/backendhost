@@ -8,6 +8,9 @@ router.post('/store-fcmToken', async (req, res) => {
   try {
     const { token } = req.body;
 
+    console.log(token);
+    console.log("after strigifying token  ")
+    console.log(JSON.stringify(token));
     if (!token) {
       return res.status(400).json({ message: 'Token is required.' });
     }

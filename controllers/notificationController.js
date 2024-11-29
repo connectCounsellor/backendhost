@@ -14,6 +14,7 @@ const sendDailyQuote = async () => {
       console.log('No users found for notifications');
       return;
     }
+    console.log('Tokens:', tokens);
 
     // Fetch the first quote in the queue
     // const quote = await QuoteModel.findOne();
@@ -30,12 +31,11 @@ const sendDailyQuote = async () => {
     // }));
 
     // const tokens = ['6IVaYGFjy4tVI-1jWji-Zq'];
-    const messages = tokens.map((token) => ({
-        to: token,
+    const messages = tokens.map((entry) => ({
+        to: entry.token, // Access the `token` field correctly
         sound: 'default',
-        body: `Quote of the day: hello from prathmesh`,
+        body: `Quote of the day: Hello from Prathmesh!`,
       }));
-  
 
 
 
@@ -44,10 +44,12 @@ const sendDailyQuote = async () => {
     for (const chunk of chunks) {
       try {
         await expo.sendPushNotificationsAsync(chunk);
-      } catch (error) {
+        console.log("inside that try")
+    } catch (error) {
         console.error('Error sending notification chunk:', error);
-      }
     }
+}
+
 
     // Delete the used quote from the queue
     // await QuoteModel.deleteOne({ _id: quote._id });
