@@ -16,7 +16,7 @@ router.post('/store-fcmToken', async (req, res) => {
     }
 
     // Check if the token already exists
-    const existingToken = await TokenModel.findOne({ Fcmtoken });
+    const existingToken = await TokenModel.findOne({token: Fcmtoken });
     if (existingToken) {
       return res.status(200).json({ message: 'Token already exists.' });
     }
