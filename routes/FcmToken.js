@@ -22,7 +22,7 @@ router.post('/store-fcmToken', async (req, res) => {
     }
 
     // Save the token to the database
-    const newToken = new TokenModel({ Fcmtoken });
+    const newToken = new TokenModel({ token:Fcmtoken });
     await newToken.save();
 
     res.status(201).json({ message: 'Token stored successfully.' });
