@@ -6,23 +6,23 @@ const router = express.Router();
 // Endpoint to store the device token
 router.post('/store-fcmToken', async (req, res) => {
   try {
-    const { token } = req.body;
+    const { Fcmtoken } = req.body;
 
-    console.log(token);
+    console.log(Fcmtoken);
     console.log("after strigifying token  ")
-    console.log(JSON.stringify(token));
-    if (!token) {
+    console.log(JSON.stringify(Fcmtoken));
+    if (!Fcmtoken) {
       return res.status(400).json({ message: 'Token is required.' });
     }
 
     // Check if the token already exists
-    const existingToken = await TokenModel.findOne({ token });
+    const existingToken = await TokenModel.findOne({ Fcmtoken });
     if (existingToken) {
       return res.status(200).json({ message: 'Token already exists.' });
     }
 
     // Save the token to the database
-    const newToken = new TokenModel({ token });
+    const newToken = new TokenModel({ Fcmtoken });
     await newToken.save();
 
     res.status(201).json({ message: 'Token stored successfully.' });
