@@ -17,12 +17,13 @@ const BlogRoute = require('./routes/blog');
 const authRoute = require('./routes/authRoute');
 const appointmentRoutes = require('./routes/Appointment')
 // const UserprofileRoutes = require('./routes/UserProfile')
-
+const FcmToken = require('./routes/FcmToken');
 const UserprofileRoutes = require('./routes/UserProfile');
 const accountsettingRoute = require('./routes/Acountsetting')
 const paymentRoutes = require('./routes/payment')
 const enrollmentRoute = require('./routes/EnrollmentRoute');
 const WebinarRoute = require('./routes/Webinar');
+const {sendDailyQuote} = require('./controllers/notificationController')
 // const {authenticateToken} = require('./middleware/authenticate'); 
 // Middleware
 app.use(cors());
@@ -39,7 +40,7 @@ connectDB();
 
 app.use(passport.initialize());
 
-
+app.use('/api', FcmToken);
 app.use('/auth', gAuth);
 app.use(BlogRoute);
 app.use(coursesRoute);
