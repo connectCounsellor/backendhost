@@ -5,6 +5,16 @@ const QuoteModel = require('../models/QuotesModel'); // Model for storing quotes
 
 const expo = new Expo();
 
+function getFirstFiveWords(text) {
+  const words = text.split(' ');  // Split the string by spaces into words
+  const firstFiveWords = words.slice(0, 5).join(' ');  // Get the first 5 words and join them back into a string
+  
+  // If there are more than 5 words, add '...'
+  return words.length > 5 ? `${firstFiveWords}...` : firstFiveWords;
+}
+
+
+
 // Function to send daily quote notification
 const sendDailyQuote = async () => {
   try {
@@ -14,7 +24,8 @@ const sendDailyQuote = async () => {
       console.log('No users found for notifications');
       return;
     }
-  
+    await QuoteModel.findOneAndDelete({}, { sort: { createdAt: 1 } });
+
 
     const quote = await QuoteModel.findOne().sort({ createdAt: 1 });
 
@@ -23,11 +34,12 @@ const sendDailyQuote = async () => {
       console.log('No quotes found');
       return;
     }
+    const data=getFirstFiveWords(quote.quote)
     const messages = tokens.map((entry) => ({
         to: entry.token,
         sound: 'default',
         title:'Quote of the day ',
-        body: `${quote.quote}`,
+        body: `${data}`,
       }));
 
 
@@ -44,7 +56,6 @@ const sendDailyQuote = async () => {
 }
 
 
-      await QuoteModel.deleteOne({ _id: quote._id });
     console.log('Daily quote sent and removed from queue.');
   } catch (error) {
     console.error('Error in sending daily quote:', error);
