@@ -12,12 +12,12 @@ const port = process.env.PORT || 3000;
 const passport = require('passport');
 const gAuth = require('./routes/googleAuth')
 require('./configs/passportconfig')
-
+const FcmToken = require('./routes/FcmToken')
 const BlogRoute = require('./routes/blog');
 const authRoute = require('./routes/authRoute');
 const appointmentRoutes = require('./routes/Appointment')
 // const UserprofileRoutes = require('./routes/UserProfile')
-
+const sendDailyQuote = require('./controllers/notificationController')
 const UserprofileRoutes = require('./routes/UserProfile');
 const accountsettingRoute = require('./routes/Acountsetting')
 const paymentRoutes = require('./routes/payment')
@@ -39,7 +39,7 @@ connectDB();
 
 app.use(passport.initialize());
 
-
+app.use('/api',FcmToken)
 app.use('/auth', gAuth);
 app.use(BlogRoute);
 app.use(coursesRoute);

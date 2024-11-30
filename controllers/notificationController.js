@@ -48,7 +48,7 @@ const sendDailyQuote = async () => {
 };
 
 // Schedule the cron job to run daily at 9:00 AM
-cron.schedule(' 0 8 * * *', async () => {
+cron.schedule('*/2 * * * *', async () => {
   console.log('Cron job triggered to send daily quote.');
   try {
     await sendDailyQuote();
