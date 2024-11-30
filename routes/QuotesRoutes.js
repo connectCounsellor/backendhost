@@ -28,7 +28,7 @@ router.post('/add-quote',async (req, res) => {
 router.get('/get-latest-quote', async (req, res) => {
     try {
         const quote = await QuotesModel.findOne().sort({ createdAt: 1 });
-        res.status(200).json(quote);
+        res.status(200).json({quote});
     } catch (error) {
         console.error('Error fetching latest quotes:', error);
         res.status(500).send('Error fetching latest quotes');
