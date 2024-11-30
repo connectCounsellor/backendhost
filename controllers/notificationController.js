@@ -71,6 +71,8 @@ cron.schedule('0 8,18 * * *', async () => {
   } catch (error) {
     console.error('Error in cron job:', error.message);
   }
+}, {
+  timezone: "Asia/Kolkata" // Replace with the desired time zone
 });
 
 module.exports = {
