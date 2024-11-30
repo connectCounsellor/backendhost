@@ -25,6 +25,8 @@ const enrollmentRoute = require('./routes/EnrollmentRoute');
 const WebinarRoute = require('./routes/Webinar');
 // const {authenticateToken} = require('./middleware/authenticate'); 
 // Middleware
+
+const QuotesRoutes = require('./routes/QuotesRoutes')
 app.use(cors());
 app.use(express.json()); // To parse JSON bodies
 
@@ -38,7 +40,7 @@ connectDB();
 
 
 app.use(passport.initialize());
-
+app.use('/api',QuotesRoutes)
 app.use('/api',FcmToken)
 app.use('/auth', gAuth);
 app.use(BlogRoute);

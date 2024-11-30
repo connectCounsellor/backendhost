@@ -18,7 +18,11 @@ const sendDailyQuote = async () => {
 
     const quote = await QuoteModel.findOne().sort({ createdAt: 1 });
 
-
+    console.log(quote)
+    if(!quote){
+      console.log('No quotes found');
+      return;
+    }
     const messages = tokens.map((entry) => ({
         to: entry.token,
         sound: 'default',
@@ -48,7 +52,7 @@ const sendDailyQuote = async () => {
 };
 
 // Schedule the cron job to run daily at 9:00 AM
-cron.schedule('*/2 * * * *', async () => {
+cron.schedule('0 8,18 * * *', async () => {
   console.log('Cron job triggered to send daily quote.');
   try {
     await sendDailyQuote();
