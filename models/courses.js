@@ -13,7 +13,7 @@ const coursesSchema =mongoose.Schema({
     },
     date:{
         type:Date,
-        default:Date.now(),
+        default:Date.now,
     },
     youtubeLink:{
         type:String,
