@@ -40,6 +40,8 @@ const sendDailyQuote = async () => {
         sound: 'default',
         title:'Quote of the day ',
         body: `${data}`,
+        data:{
+          navigationId:'Notification'},
       }));
 
 
